@@ -3,7 +3,7 @@ from __future__ import print_function
 from six.moves import cPickle as pickle
 import numpy as np
 import os
-from scipy.imageio import imread
+from imageio import imread
 import platform
 
 def load_pickle(f):
