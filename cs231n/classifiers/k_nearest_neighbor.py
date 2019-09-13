@@ -158,7 +158,12 @@ class KNearestNeighbor(object):
       # neighbors. Store these labels in closest_y.                           #
       # Hint: Look up the function numpy.argsort.                             #
       #########################################################################
-      pass
+      # sort all distances of i-th test example to training examples. np.argsort returns indexes
+      sortedIdxs = np.argsort(dists[i,:])
+      # take out k nearest items' indexes. These indexes are training example indexes
+      nearestIdxs = sortedIdxs[:k]
+      # for these indexes, take out the lables from trained data
+      closest_y = self.y_train[nearestIdxs]
       #########################################################################
       # TODO:                                                                 #
       # Now that you have found the labels of the k nearest neighbors, you    #
@@ -166,7 +171,7 @@ class KNearestNeighbor(object):
       # Store this label in y_pred[i]. Break ties by choosing the smaller     #
       # label.                                                                #
       #########################################################################
-      pass
+      y_pred[i] = np.bincount(closest_y).argmax()
       #########################################################################
       #                           END OF YOUR CODE                            # 
       #########################################################################
