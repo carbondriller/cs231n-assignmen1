@@ -132,9 +132,9 @@ class KNearestNeighbor(object):
     # So, repeat each row of self.X_train N times
     # and repeat each row of X, M times underneath itself. Both Matrices would become (NxM)xD
     X_train_repeat = np.repeat(self.X_train, num_test, axis=0)
-    X_repeat = np.repeat(X, num_train, axis=0)
+    # X_repeat = np.repeat(X, num_train, axis=0)
     # difference of each row of test to each row of train
-    diff = X_train_repeat - X_repeat
+    diff = X_train_repeat - X # X_repeat
     # take dot product of diff with its transpose, this will give euclidean distance
     diff_T = np.transpose(diff)
     dists[:,:] = np.dot(diff, diff_T)
