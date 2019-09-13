@@ -131,13 +131,19 @@ class KNearestNeighbor(object):
     # to each row of M. The result Matrix would have NxM rows. Hence NxMxD.
     # So, repeat each row of self.X_train N times
     # and repeat each row of X, M times underneath itself. Both Matrices would become (NxM)xD
-    X_train_repeat = np.repeat(self.X_train, num_test, axis=0)
+    # X_train_repeat = np.repeat(self.X_train, num_test, axis=0)
     # X_repeat = np.repeat(X, num_train, axis=0)
+    
     # difference of each row of test to each row of train
-    diff = X_train_repeat - X # X_repeat
+    # diff = X_train_repeat - X # X_repeat
+    
     # take dot product of diff with its transpose, this will give euclidean distance
-    diff_T = np.transpose(diff)
-    dists[:,:] = np.dot(diff, diff_T)
+    # diff_T = np.transpose(diff)
+    # dists[:,:] = np.dot(diff, diff_T)
+    
+    # Source: https://medium.com/p/26aa3247ac6c
+    # (x - y)^2 = x^2 + y^2 -2xy
+    dists = -2*np.dot(X,self.X_train.T) + np.sum(self.X_train**2, axis=1) + np.sum(X**2, axis=1)[:, np.newaxis]
     #########################################################################
     #                         END OF YOUR CODE                              #
     #########################################################################
