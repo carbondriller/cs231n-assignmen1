@@ -30,7 +30,16 @@ def softmax_loss_naive(W, X, y, reg):
   # here, it is easy to run into numeric instability. Don't forget the        #
   # regularization!                                                           #
   #############################################################################
-  pass
+  C = W.shape(1)
+  N = X.shape(0)
+  for i in range(N):
+    scores = X[i].dot(W) # (1,C)
+    # probability of k-th class, using Softmax,
+    # given i-th example is, prediected score of actual class at i-th i.e. y[i],
+    # divided by sum of predicted scores of all classes
+    P = np.exp(scores[y[i]]) / np.sum(np.exp(scores))
+    Li = - np.log( P ) + reg
+    loss += Li # finalize
   #############################################################################
   #                          END OF YOUR CODE                                 #
   #############################################################################
