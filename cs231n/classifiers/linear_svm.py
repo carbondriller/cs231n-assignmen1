@@ -42,7 +42,10 @@ def svm_loss_naive(W, X, y, reg):
         
         # Source: https://github.com/lightaime/cs231n/blob/master/assignment1/cs231n/classifiers/linear_svm.py#L37,
         # https://math.stackexchange.com/a/2572319/195667
+        
+        # to all incorrect categories, increase X[i] input's influence
         dW[:,j] += X[i]
+        # to correct class, decrease it
         dW[:,y[i]] -= X[i]
 
   # Right now the loss is a sum over all training examples, but we want it
@@ -105,7 +108,6 @@ def svm_loss_vectorized(W, X, y, reg):
   # Add regularization to the loss.
   loss += reg * np.sum(W * W)
   
-  
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
@@ -120,7 +122,14 @@ def svm_loss_vectorized(W, X, y, reg):
   # to reuse some of the intermediate values that you used to compute the     #
   # loss.                                                                     #
   #############################################################################
-  pass
+  
+  # sum all the rows of X, gives a (1,D)
+  row_sum = np.sum(X, axis=0)
+  # dW is (D,C), make row_sum (D,1) for column broadcasting
+  row_sum = np.reshape(row_sum, (D,1))
+  dW = dW + row_sum
+  # where columns in category y (1D array), subtract twice, because row_sum was added to it as well in previous step which should have happened
+  dW[:,y] -= row_sum
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
