@@ -28,13 +28,20 @@ def svm_loss_naive(W, X, y, reg):
   loss = 0.0
   for i in xrange(num_train):
     scores = X[i].dot(W)
+    # training example X[i] maps to category y[i], according to data provided
+    # let's see how much score has category y[i] obtained? (from our model W above)
     correct_class_score = scores[y[i]]
     for j in xrange(num_classes):
       if j == y[i]:
         continue
       margin = scores[j] - correct_class_score + 1 # note delta = 1
       if margin > 0:
+        # the category j has been (incorrectly) given a score higher than the score of actual category y[i]
+        # adding this incorrect margin to loss will adjust this
         loss += margin
+        
+        # Source: https://github.com/lightaime/cs231n/blob/master/assignment1/cs231n/classifiers/linear_svm.py#L37,
+        # https://math.stackexchange.com/a/2572319/195667
         dW[:,j] += X[i]
         dW[:,y[i]] -= X[i]
 
