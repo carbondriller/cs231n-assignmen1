@@ -30,8 +30,8 @@ def softmax_loss_naive(W, X, y, reg):
   # here, it is easy to run into numeric instability. Don't forget the        #
   # regularization!                                                           #
   #############################################################################
-  C = W.shape(1)
-  N = X.shape(0)
+  C = W.shape[1]
+  N = X.shape[0]
   for i in range(N):
     scores = X[i].dot(W) # (1,C)
     # probability of k-th class, using Softmax,
