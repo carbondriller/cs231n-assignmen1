@@ -76,7 +76,10 @@ class TwoLayerNet(object):
     # Store the result in the scores variable, which should be an array of      #
     # shape (N, C).                                                             #
     #############################################################################
-    pass
+    # b1 is column vector (H,1), we want it as row (1,H) so we could broadcast sum to all rows
+    relu = lambda x: np.maximum(0, x)      # ReLU activation function
+    h = relu(X.dot(W1) + b1)
+    scores = h.dot(W2) + b2
     #############################################################################
     #                              END OF YOUR CODE                             #
     #############################################################################
