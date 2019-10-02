@@ -107,7 +107,7 @@ class TwoLayerNet(object):
     # normalize
     loss /= N
     # Regularize
-    loss += 0.5 * reg * (np.sum(W1 * W1) + np.sum(W2 * W2))
+    loss += reg * (np.sum(W1 * W1) + np.sum(W2 * W2))
     #############################################################################
     #                              END OF YOUR CODE                             #
     #############################################################################
