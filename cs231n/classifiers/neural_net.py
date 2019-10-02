@@ -119,7 +119,33 @@ class TwoLayerNet(object):
     # and biases. Store the results in the grads dictionary. For example,       #
     # grads['W1'] should store the gradient on W1, and be a matrix of same size #
     #############################################################################
-    pass
+    
+    # source: https://github.com/carbondriller/me-learnz-CS231n/blob/master/assignment1/cs231n/classifiers/neural_net.py#L127
+    # W1
+    # ----+                      W2         b2
+    # dW2  \                     ----+      ----+
+    #      (*)----+              dW2  \     db2  \
+    # X    /       \                   \          \  
+    # ----+         \               h   \          \   scores           softmaxes
+    #               (+)------(ReLU)-----(*)--------(+)--------(softmax)----------
+    # b1            /  drelu        dh      dscores    dscores 
+    # -------------+
+    # db1    
+    
+    softmaxes = np.exp(lim_scores) / np.sum(np.exp(lim_scores), axis=1)[:,None]
+    # Gradient of softmax (derivative of softmax - see softmax.py)
+    dscores = softmaxes
+    dscores[np.arange(N), y] -= 1
+    dscores /= N
+    
+    grads['b2'] = np.sum(dscores, axis=0)  # shape (N,C) into (C,)
+    grads['W2'] = h.T.dot(dscores) + reg * W2
+    
+    dh = dscores.dot(W2.T)
+    drelu = (h > 0) * dh
+    
+    grads['b1'] = np.sum(drelu, axis=0)
+    grads['W1'] = X.T.dot(drelu) + reg * W1
     #############################################################################
     #                              END OF YOUR CODE                             #
     #############################################################################
