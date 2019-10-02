@@ -76,7 +76,6 @@ class TwoLayerNet(object):
     # Store the result in the scores variable, which should be an array of      #
     # shape (N, C).                                                             #
     #############################################################################
-    # b1 is column vector (H,1), we want it as row (1,H) so we could broadcast sum to all rows
     relu = lambda x: np.maximum(0, x)      # ReLU activation function
     h = relu(X.dot(W1) + b1)
     scores = h.dot(W2) + b2
@@ -96,7 +95,19 @@ class TwoLayerNet(object):
     # in the variable loss, which should be a scalar. Use the Softmax           #
     # classifier loss.                                                          #
     #############################################################################
-    pass
+    # source: https://github.com/carbondriller/me-learnz-CS231n/blob/master/assignment1/cs231n/classifiers/neural_net.py#L103
+    lim_scores = scores - np.max(scores) # limit scores
+    # lim_scores is (N,C), correct_scores will be (N,1)
+    # correct_scores = for all the inputs, scores for correct class according to training data
+    correct_scores = lim_scores[ np.arange(N), y ]
+    # compute softmax loss for each item of training data
+    loss_array = - correct_scores + np.log(np.sum(np.exp(lim_scores), axis=1))
+    loss = np.sum(loss_array)
+    
+    # normalize
+    loss /= N
+    # Regularize
+    loss += 0.5 * reg * (np.sum(W1 * W1) + np.sum(W2 * W2))
     #############################################################################
     #                              END OF YOUR CODE                             #
     #############################################################################
