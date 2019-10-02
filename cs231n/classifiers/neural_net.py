@@ -139,13 +139,13 @@ class TwoLayerNet(object):
     dscores /= N
     
     grads['b2'] = np.sum(dscores, axis=0)  # shape (N,C) into (C,)
-    grads['W2'] = h.T.dot(dscores) #+ reg * W2
+    grads['W2'] = h.T.dot(dscores) + reg * W2
     
     dh = dscores.dot(W2.T)
     drelu = (h > 0) * dh
     
     grads['b1'] = np.sum(drelu, axis=0)
-    grads['W1'] = X.T.dot(drelu) #+ reg * W1
+    grads['W1'] = X.T.dot(drelu) + reg * W1
     #############################################################################
     #                              END OF YOUR CODE                             #
     #############################################################################
